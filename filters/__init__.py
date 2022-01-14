@@ -1,9 +1,6 @@
-from aiogram import Dispatcher
-
+from .not_the_end import NotTheEnd
 from loader import dp
-# from .is_admin import AdminFilter
 
 
 if __name__ == "filters":
-    #dp.filters_factory.bind(is_admin)
-    pass
+    dp.filters_factory.bind(NotTheEnd)

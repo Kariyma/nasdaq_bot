@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: database
+    image: postgres:latest
+    env_file:
+      - ".env"
+    environment:
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_USER: $PGUSER
+      POSTGRES_DB: $PGDATABASE
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - botnet
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data/pgdata
+
+  tgbot:
+    container_name: bot
+    build:
+      context: .
+    command: python app.py
+    restart: always
+    networks:
+      - botnet
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+    volumes:
+      - .:/src
+
+networks:
+  botnet:
+    driver: bridge
